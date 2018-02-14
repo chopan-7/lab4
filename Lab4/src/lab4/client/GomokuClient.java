@@ -2,7 +2,7 @@ package lab4.client;
 
 import java.util.*;
 
-/**
+/** Hej
  * 
  * @author Chonratid Pangdee, Anton Johansson
  *
