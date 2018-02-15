@@ -55,6 +55,8 @@ public class GameGrid extends Observable{
 		// if gridLocation is EMPTY, insert player value and return true
 		if (getLocation(x,y) == EMPTY) {
 			this.grid[y][x] = player;
+			setChanged();
+			notifyObservers();
 			return true;
 		} else {
 			return false;
@@ -67,11 +69,34 @@ public class GameGrid extends Observable{
 	 */
 	public void clearGrid(){
 		this.grid = new int[getSize()][getSize()];
-		for (int i = 0; i < getSize(); i++) {
-			for (int j = 0; j < getSize(); j++) {
-				grid[j][i] = EMPTY;
+		for (int y = 0; y < getSize(); y++) {
+			for (int x = 0; x < getSize(); x++) {
+				grid[y][x] = EMPTY;
 			}
 		}
+		setChanged();
+		notifyObservers();
+	}
+	
+	/**
+	 * Check if player has 5 in a row in any direction.
+	 * 
+	 * @param x	starting position for x
+	 * @param y starting position for y
+	 * @param stepx	how to move in x-direction
+	 * @param stepy how to move in y-direction
+	 * @param count counter for inRow. Starts from 0.
+	 * @param player the player to check for
+	 * @return	true if player has 5 in row, false otherwise
+	 */
+	private boolean inRow(int x, int y, int stepx, int stepy, int count, int player) {
+		if (count == 5) {return true;}
+		
+		if (this.grid[y][x] == player) {
+			return inRow(x+stepx, y+stepy, stepx, stepy, ++count, player);
+		}
+		return false;
+		
 	}
 	
 	/**
@@ -81,12 +106,19 @@ public class GameGrid extends Observable{
 	 * @return true if player has 5 in row, false otherwise
 	 */
 	public boolean isWinner(int player){
-		boolean INROW = false;
-		for (int i = 0; i < this.gridsize; i++) {
-			for (int j = 0; j < this.gridsize; j++) {
-				if(this.grid[j][i] == player) {
-					
+		for (int y = 0; y < this.gridsize; y++) {
+			for (int x = 0; x < this.gridsize; x++) {
+				if(this.grid[y][x] == player) {
+					for (int i = -1; i <= 1; i++) {
+						if (inRow(x, y, i, 1, 0, player)) {
+							return true;
+						}
+					}
+					if (inRow(x,y, 1, 0, 0, player)) {
+						return true;
+					}
 				}
+					
 			}
 		}
 		return false;
