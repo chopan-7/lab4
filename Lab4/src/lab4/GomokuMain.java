@@ -15,7 +15,7 @@ public class GomokuMain {
 	
 	// main method takes port number as argument
 	public static void main(String[] args) {
-		int port = 4000;	// default port is used if no argument is given to main
+		int port = 4001;	// default port is used if no argument is given to main
 		try {
 			if (Integer.parseInt(args[0]) !=  0) {
 				port = Integer.parseInt(args[0]);
