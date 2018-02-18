@@ -2,7 +2,6 @@
  * Created on 2007 feb 8
  */
 package lab4.data;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -80,12 +79,12 @@ public class GomokuGameState extends Observable implements Observer {
 				// moves the player to grid position if empty
 				this.gameGrid.move(x, y, MY_TURN);
 				client.sendMoveMessage(x, y);
-				message = "A move has been made. It is now your opponents turn.";
+				message = "It is now your opponents turn.";
 				this.currentState=OTHER_TURN;
 	
 				// check if player has made the winning move
 				if (this.gameGrid.isWinner(MY_TURN)) {
-					message = "Player"+MY_TURN+" won!";
+					message = "You won!";
 					currentState = FINISHED;
 				}
 				setChanged();
@@ -99,9 +98,9 @@ public class GomokuGameState extends Observable implements Observer {
 	 * Starts a new game with the current client
 	 */
 	public void newGame() {
-		this.gameGrid = new GameGrid(DEFAULT_SIZE);
+		gameGrid.clearGrid();
 		this.currentState = OTHER_TURN;
-		message = "A new game is started. Waiting for the other player to make a move.";
+		message = "A new game is started. Waiting for the other player...";
 		client.sendNewGameMessage();
 		setChanged();
 		notifyObservers();
@@ -114,7 +113,7 @@ public class GomokuGameState extends Observable implements Observer {
 	public void receivedNewGame() {
 		gameGrid.clearGrid();
 		this.currentState = MY_TURN;
-		message = "A new game has been started by the other player. It's your turn.";
+		message = "A new game is started. It's your turn.";
 		setChanged();
 		notifyObservers();
 
@@ -125,7 +124,7 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void otherGuyLeft() {
 		gameGrid.clearGrid();
-		message = "Connection lost.";
+		message = "The other player left the game.";
 		this.currentState = FINISHED;
 		setChanged();
 		notifyObservers();
@@ -136,7 +135,7 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void disconnect() {
 		gameGrid.clearGrid();
-		message = "Player "+currentState+" has left the game.";
+		message = "You have left the game.";
 		notifyObservers();
 		client.disconnect();
 	}
@@ -156,12 +155,12 @@ public class GomokuGameState extends Observable implements Observer {
 			// moves the player to grid position if empty
 			this.gameGrid.move(x, y, OTHER_TURN);
 			client.sendMoveMessage(x, y);
-			message = "A move has been made. It is now your turn.";
+			message = "It is now your turn.";
 			currentState=MY_TURN;
 
 			// check if player has made the winning move
 			if (this.gameGrid.isWinner(OTHER_TURN)) {
-				message = "Player"+OTHER_TURN+" won!";
+				message = "You lost..";
 				currentState = FINISHED;
 			}
 			setChanged();
