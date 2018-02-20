@@ -1,5 +1,6 @@
 package lab4.gui;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -79,13 +80,13 @@ public class GomokuGUI implements Observer {
 		disconnectButton.setEnabled(false);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		gameGridPanel.repaint();
+
 		gameGridPanel.add(connectButton);
 		gameGridPanel.add(newGameButton);
 		gameGridPanel.add(disconnectButton);
 		gameGridPanel.add(messageLabel);
 		frame.add(gameGridPanel);
+		//frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
 	}

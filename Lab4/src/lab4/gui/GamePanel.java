@@ -29,8 +29,11 @@ public class GamePanel extends JPanel implements Observer {
 	public GamePanel(GameGrid grid) {
 		this.grid = grid;
 		grid.addObserver(this);
-		Dimension dgrid=new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 1);
-		Dimension dwind = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 100); 
+		Dimension dgrid = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 1);
+		Dimension dwind = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 100);
+		if (grid.getSize() < 10) {
+			dwind = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 140);
+		}
 		this.setMinimumSize(dgrid);
 		this.setPreferredSize(dwind);
 		this.setMaximumSize(dwind);
@@ -47,8 +50,8 @@ public class GamePanel extends JPanel implements Observer {
 	 *            the y coordinates
 	 * @return an integer array containing the [x, y] grid position
 	 */
-	public int[] getGridPosition(int x, int y) throws IndexOutOfBoundsException{
-		if(x>grid.getSize()*UNIT_SIZE||y>grid.getSize()*UNIT_SIZE) {
+	public int[] getGridPosition(int x, int y) throws IndexOutOfBoundsException {
+		if (x > grid.getSize() * UNIT_SIZE || y > grid.getSize() * UNIT_SIZE) {
 			throw new IndexOutOfBoundsException("X or Y value to big");
 		}
 		return new int[] { x / UNIT_SIZE, y / UNIT_SIZE };
@@ -60,10 +63,10 @@ public class GamePanel extends JPanel implements Observer {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Color prevcolor=g.getColor();
+		Color prevcolor = g.getColor();
 		for (int i = 0, size = grid.getSize(); i < size; i++) {
 			g.setColor(Color.BLACK);
-			if(i==0) {
+			if (i == 0) {
 				g.drawLine(size * UNIT_SIZE, 0, size * UNIT_SIZE, size * UNIT_SIZE);
 				g.drawLine(0, size * UNIT_SIZE, size * UNIT_SIZE, size * UNIT_SIZE);
 			}
@@ -71,21 +74,20 @@ public class GamePanel extends JPanel implements Observer {
 			g.drawLine(0, i * UNIT_SIZE, size * UNIT_SIZE, i * UNIT_SIZE);
 			for (int j = 0; j < size; j++) {
 				switch (grid.getLocation(j, i)) {
-				case (1): //If me is here
+				case (1): // If me is here
 					g.setColor(Color.BLUE);
 					g.drawLine((j) * UNIT_SIZE + 1, (i) * UNIT_SIZE + 1, (j + 1) * UNIT_SIZE - 1,
 							(i + 1) * UNIT_SIZE - 1);
-					g.drawLine((j) * UNIT_SIZE, (i + 1) * UNIT_SIZE, (j + 1) * UNIT_SIZE,
-							(i) * UNIT_SIZE);
+					g.drawLine((j) * UNIT_SIZE, (i + 1) * UNIT_SIZE, (j + 1) * UNIT_SIZE, (i) * UNIT_SIZE);
 					break;
-				
-				case(2): //If other is here
+
+				case (2): // If other is here
 					g.setColor(Color.RED);
 					g.drawOval((j) * UNIT_SIZE + 1, (i) * UNIT_SIZE + 1, UNIT_SIZE - 2, UNIT_SIZE - 2);
 					break;
-				default: //If Empty is here
+				default: // If Empty is here
 					break;
-				}	
+				}
 			}
 		}
 	}

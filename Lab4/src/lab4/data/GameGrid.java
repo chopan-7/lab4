@@ -10,6 +10,7 @@ public class GameGrid extends Observable{
 	public static final int EMPTY = 0;
 	public static final int ME = 1;
 	public static final int OTHER = 2;
+	public static final int INROW = 2;
 	
 	private int gridsize;
 	public int[][] grid;
@@ -87,19 +88,16 @@ public class GameGrid extends Observable{
 	 * @param stepy how to move in y-direction
 	 * @param count counter for inRow. Starts from 0.
 	 * @param player the player to check for
-	 * @return	true if player has 5 in row, false otherwise
+	 * @return	true if player has INROW in row, false otherwise
 	 */
 	private boolean inRow(int x, int y, int stepx, int stepy, int count, int player) {
-		if (count == 5) {return true;}
+		if (count == INROW) {return true;}
 		try {
 			if (this.grid[y][x] == player) {
 				return inRow(x+stepx, y+stepy, stepx, stepy, ++count, player);
 			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			
-		}
-		return false;
-		
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		return false;	
 	}
 	
 	/**
@@ -121,10 +119,8 @@ public class GameGrid extends Observable{
 						return true;
 					}
 				}
-					
 			}
 		}
 		return false;
 	}
-	
 }
