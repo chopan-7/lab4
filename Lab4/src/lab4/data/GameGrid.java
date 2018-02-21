@@ -10,13 +10,14 @@ public class GameGrid extends Observable{
 	public static final int EMPTY = 0;
 	public static final int ME = 1;
 	public static final int OTHER = 2;
+	
 	public static final int INROW = 2;
 	
 	private int gridsize;
 	public int[][] grid;
 	
 	/**
-	 * Constructor
+	 * Constructor that creates a GameGrid
 	 * 
 	 * @param size The width/height of the game grid
 	 */
@@ -79,7 +80,7 @@ public class GameGrid extends Observable{
 		notifyObservers();
 	}
 	
-	/**
+	/*
 	 * Check if player has 5 in a row in any direction.
 	 * 
 	 * @param x	starting position for x

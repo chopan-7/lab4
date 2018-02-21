@@ -41,7 +41,7 @@ public class GomokuGUI implements Observer {
 		this.gamestate = g;
 		client.addObserver(this);
 		gamestate.addObserver(this);
-		JFrame frame=new JFrame();
+		JFrame frame = new JFrame();
 		connectButton = new JButton("Connect");
 		newGameButton = new JButton("New Game");
 		disconnectButton = new JButton("Disconnect");
@@ -62,7 +62,7 @@ public class GomokuGUI implements Observer {
 		connectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				messageLabel.setText("Type in the IP to connect to.");
-				ConnectionWindow e = new ConnectionWindow(client);
+				new ConnectionWindow(client);
 			}
 		});
 		newGameButton.addActionListener(new ActionListener() {
@@ -72,25 +72,45 @@ public class GomokuGUI implements Observer {
 		});
 		disconnectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gamestate.disconnect();				
+				gamestate.disconnect();
 			}
 		});
-		
+
 		newGameButton.setEnabled(false);
 		disconnectButton.setEnabled(false);
-		
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		gameGridPanel.add(connectButton);
-		gameGridPanel.add(newGameButton);
-		gameGridPanel.add(disconnectButton);
-		gameGridPanel.add(messageLabel);
-		frame.add(gameGridPanel);
-		//frame.setResizable(false);
+		Container contentPane = frame.getContentPane();
+		SpringLayout layout = new SpringLayout();
+		contentPane.setLayout(layout);
+		contentPane.add(connectButton);
+		contentPane.add(newGameButton);
+		contentPane.add(disconnectButton);
+		contentPane.add(messageLabel);
+		contentPane.add(gameGridPanel);
+
+		// SetUp Layout
+		layout.putConstraint(SpringLayout.WEST, gameGridPanel, 10, SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.NORTH, gameGridPanel, 10, SpringLayout.NORTH, contentPane);
+		layout.putConstraint(SpringLayout.WEST, connectButton, 5, SpringLayout.WEST, gameGridPanel);
+		layout.putConstraint(SpringLayout.NORTH, connectButton, 5, SpringLayout.SOUTH, gameGridPanel);
+		layout.putConstraint(SpringLayout.WEST, newGameButton, 5, SpringLayout.EAST, connectButton);
+		layout.putConstraint(SpringLayout.NORTH, newGameButton, 5, SpringLayout.SOUTH, gameGridPanel);
+		layout.putConstraint(SpringLayout.WEST, disconnectButton, 5, SpringLayout.EAST, newGameButton);
+		layout.putConstraint(SpringLayout.NORTH, disconnectButton, 5, SpringLayout.SOUTH, gameGridPanel);
+		layout.putConstraint(SpringLayout.NORTH, messageLabel, 5, SpringLayout.SOUTH, connectButton);
+		layout.putConstraint(SpringLayout.WEST, messageLabel, 5, SpringLayout.WEST, gameGridPanel);
+		layout.putConstraint(SpringLayout.EAST, contentPane, 5, SpringLayout.EAST, gameGridPanel);
+		layout.putConstraint(SpringLayout.SOUTH, contentPane, 5, SpringLayout.SOUTH, messageLabel);
+	
 		frame.pack();
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Called Automatically from the observed object
+	 */
 	public void update(Observable arg0, Object arg1) {
 		// Update the buttons if the connection status has changed
 		if (arg0 == client) {

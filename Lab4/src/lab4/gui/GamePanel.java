@@ -30,14 +30,9 @@ public class GamePanel extends JPanel implements Observer {
 		this.grid = grid;
 		grid.addObserver(this);
 		Dimension dgrid = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 1);
-		Dimension dwind = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 100);
-		if (grid.getSize() < 10) {
-			dwind = new Dimension(grid.getSize() * UNIT_SIZE + 1, grid.getSize() * UNIT_SIZE + 140);
-		}
 		this.setMinimumSize(dgrid);
-		this.setPreferredSize(dwind);
-		this.setMaximumSize(dwind);
-		this.add(Box.createRigidArea(dgrid));
+		this.setPreferredSize(dgrid);
+		this.setMaximumSize(dgrid);
 		this.setBackground(Color.WHITE);
 	}
 
@@ -70,8 +65,8 @@ public class GamePanel extends JPanel implements Observer {
 				g.drawLine(size * UNIT_SIZE, 0, size * UNIT_SIZE, size * UNIT_SIZE);
 				g.drawLine(0, size * UNIT_SIZE, size * UNIT_SIZE, size * UNIT_SIZE);
 			}
-			g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, size * UNIT_SIZE);
-			g.drawLine(0, i * UNIT_SIZE, size * UNIT_SIZE, i * UNIT_SIZE);
+			g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, size * UNIT_SIZE);//draws vertical lines
+			g.drawLine(0, i * UNIT_SIZE, size * UNIT_SIZE, i * UNIT_SIZE);//draws horizontal lines
 			for (int j = 0; j < size; j++) {
 				switch (grid.getLocation(j, i)) {
 				case (1): // If me is here
@@ -90,6 +85,7 @@ public class GamePanel extends JPanel implements Observer {
 				}
 			}
 		}
+		g.setColor(prevcolor);
 	}
 
 }
